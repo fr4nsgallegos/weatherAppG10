@@ -1,9 +1,10 @@
 import 'dart:convert';
 
 import 'package:http/http.dart' as http;
+import 'package:weatherappg10/models/weather_model.dart';
 
 class ApiService {
-  Future getInfo() async {
+  Future<WeatherModel?> getInfo() async {
     Uri url = Uri.parse(
         "http://api.weatherapi.com/v1/current.json?key=70866d7ade244a3c9ca20142230509&q=Lima&aqi=no");
     http.Response response = await http.get(url);
@@ -15,8 +16,11 @@ class ApiService {
       print("------------------------");
       print(data);
       print("------------------------");
-
-      print(data["location"]);
+      WeatherModel weatherModel = WeatherModel.fromJson(data);
+      print(weatherModel);
+      print(weatherModel.location.name);
+      return weatherModel;
     }
+    return null;
   }
 }
