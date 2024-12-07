@@ -9,7 +9,7 @@ class SearchBox extends StatelessWidget {
   Widget build(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 10.0),
-      child: TextField(
+      child: TextFormField(
         controller: controller,
         decoration: InputDecoration(
             hintText: "Ingresa ciudad",
@@ -28,6 +28,12 @@ class SearchBox extends StatelessWidget {
               ),
             )),
         style: TextStyle(color: Colors.white),
+        validator: (value) {
+          if (value != null && value.isEmpty) {
+            return "El campo es obligatorio";
+          }
+          return null;
+        },
       ),
     );
   }
