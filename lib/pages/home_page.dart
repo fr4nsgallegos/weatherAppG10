@@ -12,7 +12,7 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
   WeatherModel? weatherModel;
-
+  TextEditingController ciudadController = TextEditingController();
   Future<Position> getLocation() async {
     bool _serviceEnabled;
     LocationPermission _permission;
@@ -38,7 +38,8 @@ class _HomePageState extends State<HomePage> {
     Position position = await getLocation();
 
     print(position);
-    // weatherModel = await ApiService().getInfo();
+    weatherModel = await ApiService()
+        .getWeatherInfo(position.latitude, position.longitude);
     setState(() {});
   }
 
@@ -52,10 +53,6 @@ class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      floatingActionButton: FloatingActionButton(onPressed: () {
-        // ApiService().getInfo();
-        getDataLocation();
-      }),
       backgroundColor: Color(0xff2C2F31),
       appBar: AppBar(
         title: Text(
@@ -72,74 +69,83 @@ class _HomePageState extends State<HomePage> {
           ),
         ],
       ),
-      body: Column(
-        children: [
-          SearchBox(),
-          weatherModel == null
-              ? Center(
-                  child: CircularProgressIndicator(),
-                )
-              : Container(
-                  padding: EdgeInsets.symmetric(horizontal: 16, vertical: 24),
-                  margin: EdgeInsets.all(24),
-                  decoration: BoxDecoration(
-                    gradient: LinearGradient(
-                      colors: [
-                        Color(0xff6A99F7),
-                        Color(0xff2E5FEC),
-                      ],
-                      begin: Alignment.bottomRight,
-                      end: Alignment.topLeft,
-                    ),
-                    borderRadius: BorderRadius.circular(25),
-                  ),
-                  child: Column(
-                    children: [
-                      Text(
-                        "${weatherModel!.location.name}, ${weatherModel!.location.country}",
-                        style: TextStyle(color: Colors.white, fontSize: 18),
-                      ),
-                      SizedBox(height: 24),
-                      Image.asset(
-                        "assets/images/heavycloudy.png",
-                        height: 100,
-                      ),
-                      SizedBox(height: 24),
-                      Text(
-                        "${weatherModel!.current.tempC}°",
-                        style: TextStyle(color: Colors.white, fontSize: 100),
-                      ),
-                      Divider(
-                        color: Colors.white,
-                        thickness: 0.2,
-                        indent: 16,
-                        endIndent: 16,
-                        height: 32,
-                      ),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                        children: [
-                          WeatherItem(
-                            value: weatherModel!.current.windKph.toString(),
-                            unit: "km/h",
-                            imagePath: "windspeed",
-                          ),
-                          WeatherItem(
-                            value: weatherModel!.current.humidity.toString(),
-                            unit: "%",
-                            imagePath: "humidity",
-                          ),
-                          WeatherItem(
-                            value: weatherModel!.current.cloud.toString(),
-                            unit: "%",
-                            imagePath: "cloud",
-                          ),
+      body: SingleChildScrollView(
+        child: Column(
+          children: [
+            SearchBox(
+              controller: ciudadController,
+              function: () async {
+                weatherModel = await ApiService()
+                    .getWeatherInfoFromCity(ciudadController.text);
+                setState(() {});
+              },
+            ),
+            weatherModel == null
+                ? Center(
+                    child: CircularProgressIndicator(),
+                  )
+                : Container(
+                    padding: EdgeInsets.symmetric(horizontal: 16, vertical: 24),
+                    margin: EdgeInsets.all(24),
+                    decoration: BoxDecoration(
+                      gradient: LinearGradient(
+                        colors: [
+                          Color(0xff6A99F7),
+                          Color(0xff2E5FEC),
                         ],
+                        begin: Alignment.bottomRight,
+                        end: Alignment.topLeft,
                       ),
-                    ],
+                      borderRadius: BorderRadius.circular(25),
+                    ),
+                    child: Column(
+                      children: [
+                        Text(
+                          "${weatherModel!.location.name}, ${weatherModel!.location.country}",
+                          style: TextStyle(color: Colors.white, fontSize: 18),
+                        ),
+                        SizedBox(height: 24),
+                        Image.asset(
+                          "assets/images/heavycloudy.png",
+                          height: 100,
+                        ),
+                        SizedBox(height: 24),
+                        Text(
+                          "${weatherModel!.current.tempC}°",
+                          style: TextStyle(color: Colors.white, fontSize: 100),
+                        ),
+                        Divider(
+                          color: Colors.white,
+                          thickness: 0.2,
+                          indent: 16,
+                          endIndent: 16,
+                          height: 32,
+                        ),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                          children: [
+                            WeatherItem(
+                              value: weatherModel!.current.windKph.toString(),
+                              unit: "km/h",
+                              imagePath: "windspeed",
+                            ),
+                            WeatherItem(
+                              value: weatherModel!.current.humidity.toString(),
+                              unit: "%",
+                              imagePath: "humidity",
+                            ),
+                            WeatherItem(
+                              value: weatherModel!.current.cloud.toString(),
+                              unit: "%",
+                              imagePath: "cloud",
+                            ),
+                          ],
+                        ),
+                      ],
+                    ),
                   ),
-                ),
-        ],
+          ],
+        ),
       ),
     );
   }
