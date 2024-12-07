@@ -93,9 +93,21 @@ class _HomePageState extends State<HomePage> {
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                         children: [
-                          WeatherItem(),
-                          WeatherItem(),
-                          WeatherItem(),
+                          WeatherItem(
+                            value: weatherModel!.current.windKph.toString(),
+                            unit: "km/h",
+                            imagePath: "windspeed",
+                          ),
+                          WeatherItem(
+                            value: weatherModel!.current.humidity.toString(),
+                            unit: "%",
+                            imagePath: "humidity",
+                          ),
+                          WeatherItem(
+                            value: weatherModel!.current.cloud.toString(),
+                            unit: "%",
+                            imagePath: "cloud",
+                          ),
                         ],
                       ),
                     ],
