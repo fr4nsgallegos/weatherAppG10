@@ -75,7 +75,11 @@ class _HomePageState extends State<HomePage> {
         backgroundColor: Color(0xff2C2F31),
         actions: [
           IconButton(
-            onPressed: () {},
+            onPressed: () {
+              getDataLocation();
+              ciudadController.clear();
+              setState(() {});
+            },
             icon: Icon(Icons.location_on),
             color: Colors.white,
           ),
@@ -98,6 +102,7 @@ class _HomePageState extends State<HomePage> {
                         forecastModel = await ApiService()
                             .getForecastInfoFromCity(ciudadController.text);
                         FocusScope.of(context).unfocus();
+                        ciudadController.clear();
                         setState(() {});
                       }
                     },

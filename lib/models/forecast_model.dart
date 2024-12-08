@@ -190,8 +190,8 @@ class Current {
 }
 
 class Condition {
-  Text2 text1;
-  Icon1 icon;
+  Text2? text1;
+  Icon1? icon;
   int code;
 
   Condition({
@@ -201,8 +201,8 @@ class Condition {
   });
 
   factory Condition.fromJson(Map<String, dynamic> json) => Condition(
-        text1: textValues.map[json["text"]]!,
-        icon: iconValues.map[json["icon"]]!,
+        text1: textValues.map[json["text"]],
+        icon: iconValues.map[json["icon"]],
         code: json["code"],
       );
 
