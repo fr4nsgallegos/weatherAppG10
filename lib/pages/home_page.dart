@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
+import 'package:weatherappg10/models/forecast_model.dart';
 import 'package:weatherappg10/models/weather_model.dart';
 import 'package:weatherappg10/services/api_service.dart';
 import 'package:weatherappg10/widgets/forecast_item.dart';
@@ -13,6 +14,7 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
   WeatherModel? weatherModel;
+  ForecastModel? forecastModel;
   final formkey = GlobalKey<FormState>();
   TextEditingController ciudadController = TextEditingController();
 
@@ -41,8 +43,12 @@ class _HomePageState extends State<HomePage> {
     Position position = await getLocation();
 
     print(position);
-    weatherModel = await ApiService()
-        .getWeatherInfo(position.latitude, position.longitude);
+    // weatherModel = await ApiService()
+    //     .getWeatherInfo(position.latitude, position.longitude);
+    forecastModel = await ApiService()
+        .getForecastInfo(position.latitude, position.longitude);
+    print("---------------------");
+    print(forecastModel);
     setState(() {});
   }
 
@@ -90,7 +96,7 @@ class _HomePageState extends State<HomePage> {
                 }
               },
             ),
-            weatherModel == null
+            forecastModel == null
                 ? Center(
                     child: CircularProgressIndicator(),
                   )
@@ -111,7 +117,7 @@ class _HomePageState extends State<HomePage> {
                     child: Column(
                       children: [
                         Text(
-                          "${weatherModel!.location.name}, ${weatherModel!.location.country}",
+                          "${forecastModel!.location.name}, ${forecastModel!.location.country}",
                           style: TextStyle(color: Colors.white, fontSize: 18),
                         ),
                         SizedBox(height: 24),
@@ -121,7 +127,7 @@ class _HomePageState extends State<HomePage> {
                         ),
                         SizedBox(height: 24),
                         Text(
-                          "${weatherModel!.current.tempC}°",
+                          "${forecastModel!.current.tempC}°",
                           style: TextStyle(color: Colors.white, fontSize: 100),
                         ),
                         Divider(
@@ -135,17 +141,17 @@ class _HomePageState extends State<HomePage> {
                           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                           children: [
                             WeatherItem(
-                              value: weatherModel!.current.windKph.toString(),
+                              value: forecastModel!.current.windKph.toString(),
                               unit: "km/h",
                               imagePath: "windspeed",
                             ),
                             WeatherItem(
-                              value: weatherModel!.current.humidity.toString(),
+                              value: forecastModel!.current.humidity.toString(),
                               unit: "%",
                               imagePath: "humidity",
                             ),
                             WeatherItem(
-                              value: weatherModel!.current.cloud.toString(),
+                              value: forecastModel!.current.cloud.toString(),
                               unit: "%",
                               imagePath: "cloud",
                             ),
@@ -159,15 +165,20 @@ class _HomePageState extends State<HomePage> {
               child: SingleChildScrollView(
                 scrollDirection: Axis.horizontal,
                 child: Row(
-                  children: [
-                    ForecastItem(),
-                    ForecastItem(),
-                    ForecastItem(),
-                    ForecastItem(),
-                    ForecastItem(),
-                    ForecastItem(),
-                    ForecastItem(),
-                  ],
+                  children: List.generate(
+                    forecastModel!.forecast.forecastday[0].hour.length,
+                    (index) => ForecastItem(
+                      hour: forecastModel!
+                          .forecast.forecastday[0].hour[index].time
+                          .toString()
+                          .substring(11, 16),
+                      isDay: forecastModel!
+                          .forecast.forecastday[0].hour[index].isDay,
+                      value: forecastModel!
+                          .forecast.forecastday[0].hour[index].tempC
+                          .toString(),
+                    ),
+                  ),
                 ),
               ),
             ),

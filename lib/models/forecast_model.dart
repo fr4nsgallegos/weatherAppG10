@@ -44,10 +44,10 @@ class Current {
   double windKph;
   int windDegree;
   String windDir;
-  int pressureMb;
+  double pressureMb;
   double pressureIn;
-  int precipMm;
-  int precipIn;
+  double precipMm;
+  double precipIn;
   int humidity;
   int cloud;
   double feelslikeC;
@@ -58,14 +58,14 @@ class Current {
   double heatindexF;
   double dewpointC;
   double dewpointF;
-  int visKm;
-  int visMiles;
+  double visKm;
+  double visMiles;
   double uv;
   double gustMph;
   double gustKph;
   int? timeEpoch;
   String? time;
-  int? snowCm;
+  double? snowCm;
   int? willItRain;
   int? chanceOfRain;
   int? willItSnow;
@@ -190,30 +190,30 @@ class Current {
 }
 
 class Condition {
-  Text text;
-  Icon icon;
+  Text2 text1;
+  Icon1 icon;
   int code;
 
   Condition({
-    required this.text,
+    required this.text1,
     required this.icon,
     required this.code,
   });
 
   factory Condition.fromJson(Map<String, dynamic> json) => Condition(
-        text: textValues.map[json["text"]]!,
+        text1: textValues.map[json["text"]]!,
         icon: iconValues.map[json["icon"]]!,
         code: json["code"],
       );
 
   Map<String, dynamic> toJson() => {
-        "text": textValues.reverse[text],
+        "text": textValues.reverse[text1],
         "icon": iconValues.reverse[icon],
         "code": code,
       };
 }
 
-enum Icon {
+enum Icon1 {
   CDN_WEATHERAPI_COM_WEATHER_64_X64_DAY_113_PNG,
   CDN_WEATHERAPI_COM_WEATHER_64_X64_DAY_116_PNG,
   CDN_WEATHERAPI_COM_WEATHER_64_X64_NIGHT_113_PNG,
@@ -223,25 +223,25 @@ enum Icon {
 
 final iconValues = EnumValues({
   "//cdn.weatherapi.com/weather/64x64/day/113.png":
-      Icon.CDN_WEATHERAPI_COM_WEATHER_64_X64_DAY_113_PNG,
+      Icon1.CDN_WEATHERAPI_COM_WEATHER_64_X64_DAY_113_PNG,
   "//cdn.weatherapi.com/weather/64x64/day/116.png":
-      Icon.CDN_WEATHERAPI_COM_WEATHER_64_X64_DAY_116_PNG,
+      Icon1.CDN_WEATHERAPI_COM_WEATHER_64_X64_DAY_116_PNG,
   "//cdn.weatherapi.com/weather/64x64/night/113.png":
-      Icon.CDN_WEATHERAPI_COM_WEATHER_64_X64_NIGHT_113_PNG,
+      Icon1.CDN_WEATHERAPI_COM_WEATHER_64_X64_NIGHT_113_PNG,
   "//cdn.weatherapi.com/weather/64x64/night/116.png":
-      Icon.CDN_WEATHERAPI_COM_WEATHER_64_X64_NIGHT_116_PNG,
+      Icon1.CDN_WEATHERAPI_COM_WEATHER_64_X64_NIGHT_116_PNG,
   "//cdn.weatherapi.com/weather/64x64/night/119.png":
-      Icon.CDN_WEATHERAPI_COM_WEATHER_64_X64_NIGHT_119_PNG
+      Icon1.CDN_WEATHERAPI_COM_WEATHER_64_X64_NIGHT_119_PNG
 });
 
-enum Text { CLEAR, CLOUDY, PARTLY_CLOUDY, SUNNY, TEXT_PARTLY_CLOUDY }
+enum Text2 { CLEAR, CLOUDY, PARTLY_CLOUDY, SUNNY, TEXT_PARTLY_CLOUDY }
 
 final textValues = EnumValues({
-  "Clear ": Text.CLEAR,
-  "Cloudy ": Text.CLOUDY,
-  "Partly Cloudy": Text.PARTLY_CLOUDY,
-  "Sunny": Text.SUNNY,
-  "Partly Cloudy ": Text.TEXT_PARTLY_CLOUDY
+  "Clear ": Text2.CLEAR,
+  "Cloudy ": Text2.CLOUDY,
+  "Partly Cloudy": Text2.PARTLY_CLOUDY,
+  "Sunny": Text2.SUNNY,
+  "Partly Cloudy ": Text2.TEXT_PARTLY_CLOUDY
 });
 
 class Forecast {
@@ -343,22 +343,22 @@ class Day {
   double maxtempF;
   double mintempC;
   double mintempF;
-  int avgtempC;
+  double avgtempC;
   double avgtempF;
   double maxwindMph;
   double maxwindKph;
-  int totalprecipMm;
-  int totalprecipIn;
-  int totalsnowCm;
-  int avgvisKm;
-  int avgvisMiles;
+  double totalprecipMm;
+  double totalprecipIn;
+  double totalsnowCm;
+  double avgvisKm;
+  double avgvisMiles;
   int avghumidity;
   int dailyWillItRain;
   int dailyChanceOfRain;
   int dailyWillItSnow;
   int dailyChanceOfSnow;
   Condition condition;
-  int uv;
+  double uv;
 
   Day({
     required this.maxtempC,
