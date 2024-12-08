@@ -83,24 +83,24 @@ class _HomePageState extends State<HomePage> {
       ),
       body: Form(
         key: formkey,
-        child: ListView(
-          children: [
-            SearchBox(
-              controller: ciudadController,
-              function: () async {
-                if (formkey.currentState!.validate()) {
-                  weatherModel = await ApiService()
-                      .getWeatherInfoFromCity(ciudadController.text);
-                  FocusScope.of(context).unfocus();
-                  setState(() {});
-                }
-              },
-            ),
-            forecastModel == null
-                ? Center(
-                    child: CircularProgressIndicator(),
-                  )
-                : Container(
+        child: forecastModel == null
+            ? Center(
+                child: CircularProgressIndicator(),
+              )
+            : ListView(
+                children: [
+                  SearchBox(
+                    controller: ciudadController,
+                    function: () async {
+                      if (formkey.currentState!.validate()) {
+                        weatherModel = await ApiService()
+                            .getWeatherInfoFromCity(ciudadController.text);
+                        FocusScope.of(context).unfocus();
+                        setState(() {});
+                      }
+                    },
+                  ),
+                  Container(
                     padding: EdgeInsets.symmetric(horizontal: 16, vertical: 24),
                     margin: EdgeInsets.all(24),
                     decoration: BoxDecoration(
@@ -160,30 +160,30 @@ class _HomePageState extends State<HomePage> {
                       ],
                     ),
                   ),
-            Padding(
-              padding: const EdgeInsets.only(bottom: 32),
-              child: SingleChildScrollView(
-                scrollDirection: Axis.horizontal,
-                child: Row(
-                  children: List.generate(
-                    forecastModel!.forecast.forecastday[0].hour.length,
-                    (index) => ForecastItem(
-                      hour: forecastModel!
-                          .forecast.forecastday[0].hour[index].time
-                          .toString()
-                          .substring(11, 16),
-                      isDay: forecastModel!
-                          .forecast.forecastday[0].hour[index].isDay,
-                      value: forecastModel!
-                          .forecast.forecastday[0].hour[index].tempC
-                          .toString(),
+                  Padding(
+                    padding: const EdgeInsets.only(bottom: 32),
+                    child: SingleChildScrollView(
+                      scrollDirection: Axis.horizontal,
+                      child: Row(
+                        children: List.generate(
+                          forecastModel!.forecast.forecastday[0].hour.length,
+                          (index) => ForecastItem(
+                            hour: forecastModel!
+                                .forecast.forecastday[0].hour[index].time
+                                .toString()
+                                .substring(11, 16),
+                            isDay: forecastModel!
+                                .forecast.forecastday[0].hour[index].isDay,
+                            value: forecastModel!
+                                .forecast.forecastday[0].hour[index].tempC
+                                .toString(),
+                          ),
+                        ),
+                      ),
                     ),
                   ),
-                ),
+                ],
               ),
-            ),
-          ],
-        ),
       ),
     );
   }
