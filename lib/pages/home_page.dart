@@ -93,8 +93,10 @@ class _HomePageState extends State<HomePage> {
                     controller: ciudadController,
                     function: () async {
                       if (formkey.currentState!.validate()) {
-                        weatherModel = await ApiService()
-                            .getWeatherInfoFromCity(ciudadController.text);
+                        // weatherModel = await ApiService()
+                        //     .getWeatherInfoFromCity(ciudadController.text);
+                        forecastModel = await ApiService()
+                            .getForecastInfoFromCity(ciudadController.text);
                         FocusScope.of(context).unfocus();
                         setState(() {});
                       }
